@@ -1,0 +1,32 @@
+# Visual Studio Cache & Temporary Files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build Output Directories
+bin/
+obj/
+dist/
+x64/
+x86/
+Debug/
+Release/
+
+# Intermediate & Compiled Files
+*.obj
+*.lib
+*.exp
+*.res
+*.pdb
+*.idb
+*.ilk
+*.tlog
+*.lastcodeanalysissucceeded
+*.log
+
+# APK test files & caches
+*.apk
+*_GradleProject/
+*.classCache/

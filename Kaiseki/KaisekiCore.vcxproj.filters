@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ApkCoreApi.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\core\AxmlEngine.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\core\CryptoEngine.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\core\DexEngine.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\core\JadxBridge.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\core\puff.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\core\ZipEngine.h"><Filter>Header Files</Filter></ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\ApkCore.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\core\AxmlEngine.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\core\CryptoEngine.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\core\DexEngine.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\core\JadxBridge.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\core\puff.c"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\core\ZipEngine.cpp"><Filter>Source Files</Filter></ClCompile>
+  </ItemGroup>
+</Project>

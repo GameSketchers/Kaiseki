@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{A1B2C3D4-0003-4000-8000-000000000003}</ProjectGuid>
+    <RootNamespace>KaisekiUI</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\bin\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\bin\obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>KaisekiUI</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\bin\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\bin\obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>KaisekiUI</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)..\bin\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\bin\obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>KaisekiUI</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)..\bin\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\bin\obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>KaisekiUI</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;KAISEKIUI_EXPORTS;_WINDOWS;_USRDLL;APKUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)src\ui;$(SolutionDir)src\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <DelayLoadDLLs>KaisekiCore.dll;KaisekiDex.dll;KaisekiAnim.dll;KaisekiADB.dll;KaisekiSec.dll;KaisekiDiff.dll;KaisekiHex.dll;KaisekiRes.dll</DelayLoadDLLs>
+      <AdditionalDependencies>delayimp.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;user32.lib;gdi32.lib;shell32.lib;ole32.lib;comctl32.lib;comdlg32.lib;advapi32.lib;dwmapi.lib;$(OutDir)KaisekiCore.lib;$(OutDir)KaisekiDex.lib;$(OutDir)KaisekiADB.lib;$(OutDir)KaisekiSec.lib;$(OutDir)KaisekiDiff.lib;$(OutDir)KaisekiHex.lib;$(OutDir)KaisekiRes.lib;$(OutDir)KaisekiAnim.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(OutDir)KaisekiUI.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;KAISEKIUI_EXPORTS;_WINDOWS;_USRDLL;APKUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)src\ui;$(SolutionDir)src\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+      <DelayLoadDLLs>KaisekiCore.dll;KaisekiDex.dll;KaisekiAnim.dll;KaisekiADB.dll;KaisekiSec.dll;KaisekiDiff.dll;KaisekiHex.dll;KaisekiRes.dll</DelayLoadDLLs>
+      <AdditionalDependencies>delayimp.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;user32.lib;gdi32.lib;shell32.lib;ole32.lib;comctl32.lib;comdlg32.lib;advapi32.lib;dwmapi.lib;$(OutDir)KaisekiCore.lib;$(OutDir)KaisekiDex.lib;$(OutDir)KaisekiADB.lib;$(OutDir)KaisekiSec.lib;$(OutDir)KaisekiDiff.lib;$(OutDir)KaisekiHex.lib;$(OutDir)KaisekiRes.lib;$(OutDir)KaisekiAnim.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(OutDir)KaisekiUI.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;KAISEKIUI_EXPORTS;_WINDOWS;_USRDLL;APKUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)src\ui;$(SolutionDir)src\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <DelayLoadDLLs>KaisekiCore.dll;KaisekiDex.dll;KaisekiAnim.dll;KaisekiADB.dll;KaisekiSec.dll;KaisekiDiff.dll;KaisekiHex.dll;KaisekiRes.dll</DelayLoadDLLs>
+      <AdditionalDependencies>delayimp.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;user32.lib;gdi32.lib;shell32.lib;ole32.lib;comctl32.lib;comdlg32.lib;advapi32.lib;dwmapi.lib;$(OutDir)KaisekiCore.lib;$(OutDir)KaisekiDex.lib;$(OutDir)KaisekiADB.lib;$(OutDir)KaisekiSec.lib;$(OutDir)KaisekiDiff.lib;$(OutDir)KaisekiHex.lib;$(OutDir)KaisekiRes.lib;$(OutDir)KaisekiAnim.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(OutDir)KaisekiUI.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;KAISEKIUI_EXPORTS;_WINDOWS;_USRDLL;APKUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)src\ui;$(SolutionDir)src\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <DelayLoadDLLs>KaisekiCore.dll;KaisekiDex.dll;KaisekiAnim.dll;KaisekiADB.dll;KaisekiSec.dll;KaisekiDiff.dll;KaisekiHex.dll;KaisekiRes.dll</DelayLoadDLLs>
+      <AdditionalDependencies>delayimp.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;user32.lib;gdi32.lib;shell32.lib;ole32.lib;comctl32.lib;comdlg32.lib;advapi32.lib;dwmapi.lib;$(OutDir)KaisekiCore.lib;$(OutDir)KaisekiDex.lib;$(OutDir)KaisekiADB.lib;$(OutDir)KaisekiSec.lib;$(OutDir)KaisekiDiff.lib;$(OutDir)KaisekiHex.lib;$(OutDir)KaisekiRes.lib;$(OutDir)KaisekiAnim.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(OutDir)KaisekiUI.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ApkUIApi.h" />
+    <ClInclude Include="include\KaisekiModuleManager.h" />
+    <ClInclude Include="src\ui\FontManager.h" />
+    <ClInclude Include="src\ui\KaisekiTheme.h" />
+    <ClInclude Include="src\ui\SettingsManager.h" />
+    <ClInclude Include="src\ui\UIWindow.h" />
+    <ClInclude Include="src\ui\VectorIcons.h" />
+    <ClInclude Include="src\ui\SplashScreen.h" />
+    <ClInclude Include="src\ui\ProgressDialog.h" />
+    <ClInclude Include="src\ui\ToolInstallerDialog.h" />
+    <ClInclude Include="src\ui\SettingsDialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ui\ApkUI.cpp" />
+    <ClCompile Include="src\ui\KaisekiModuleManager.cpp" />
+    <ClCompile Include="src\ui\UIWindow.cpp" />
+    <ClCompile Include="src\ui\UIRenderer.cpp" />
+    <ClCompile Include="src\ui\SplashScreen.cpp" />
+    <ClCompile Include="src\ui\ProgressDialog.cpp" />
+    <ClCompile Include="src\ui\ToolInstallerDialog.cpp" />
+    <ClCompile Include="src\ui\SettingsDialog.cpp" />
+    <ClCompile Include="src\ui\KaisekiLang.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\KaisekiUI.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
