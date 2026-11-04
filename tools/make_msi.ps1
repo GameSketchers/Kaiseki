@@ -71,27 +71,38 @@ $cabPath = "$tempCabDir\Data1.cab"
 
 # 2.1 License RTF Olusturma (GPLv3)
 $licenseText = [System.IO.File]::ReadAllText("LICENSE")
-$rtfBody = $licenseText.Replace('\', '\\').Replace('{', '\{').Replace('}', '\}') -replace "`r?`n", "\par`r`n"
-$rtfContent = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Segoe UI;}}\viewkind4\uc1\pard\f0\fs18 $rtfBody}"
+$escaped = $licenseText.Replace('\', '\\').Replace('{', '\{').Replace('}' , '\}')
+$escaped = $escaped -replace '(?m)^([ \t]*)(GNU GENERAL PUBLIC LICENSE)([ \t]*)$', '{\qc\b\fs22 $2\par}'
+$escaped = $escaped -replace '(?m)^([ \t]*)(Version 3, 29 June 2007)([ \t]*)$', '{\qc\i\fs18 $2\par\par}'
+$escaped = $escaped -replace '(?m)^([ \t]*)(Preamble)([ \t]*)$', '{\b\fs20 $2\par}'
+$escaped = $escaped -replace '(?m)^([ \t]*)(TERMS AND CONDITIONS.*)$', '{\b\fs20 $2\par}'
+$rtfBody = $escaped -replace "`r?`n", "\par`r`n"
+$rtfContent = "{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Segoe UI;}}\viewkind4\uc1\pard\f0\fs18 $rtfBody}"
 $rtfPath = "$tempCabDir\license.rtf"
 [System.IO.File]::WriteAllText($rtfPath, $rtfContent, [System.Text.Encoding]::ASCII)
 
 # 3. Profesyonel GDI+ Gorselleri (493x58 BannerBmp, 493x312 DialogBmp)
 Add-Type -AssemblyName System.Drawing
 
-# 3.1 BannerBmp (493x58): Koyu lacivert ust bar + Sagda logo
+# 3.1 BannerBmp (493x58): Temiz beyaz ust bar + Sagda Kaiseki logosu + Ust mavi vurgu
 $bmpBanner = New-Object System.Drawing.Bitmap(493, 58)
 $gBanner = [System.Drawing.Graphics]::FromImage($bmpBanner)
-$gBanner.Clear([System.Drawing.Color]::FromArgb(20, 24, 35))
+$gBanner.Clear([System.Drawing.Color]::White)
 
+# 2px Kaiseki Mavisi Vurgu
+$brushAccent = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(37, 99, 235))
+$gBanner.FillRectangle($brushAccent, 0, 0, 493, 2)
+$brushAccent.Dispose()
+
+# Sagda Kaiseki Logosu (48x48)
 $logoPath = "Kaiseki\res\logo.png"
 if (Test-Path $logoPath) {
     $imgLogo = [System.Drawing.Image]::FromFile($logoPath)
     $gBanner.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-    $gBanner.DrawImage($imgLogo, (493 - 52), 6, 46, 46)
+    $gBanner.DrawImage($imgLogo, (493 - 54), 5, 48, 48)
     $imgLogo.Dispose()
 }
-$penBorder = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(45, 55, 75), 1)
+$penBorder = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(226, 232, 240), 1)
 $gBanner.DrawLine($penBorder, 0, 57, 493, 57)
 $penBorder.Dispose()
 $gBanner.Dispose()
@@ -100,10 +111,10 @@ $bannerBmpPath = "$tempCabDir\Banner.bmp"
 $bmpBanner.Save($bannerBmpPath, [System.Drawing.Imaging.ImageFormat]::Bmp)
 $bmpBanner.Dispose()
 
-# 3.2 DialogBmp (493x312): Sol panelli koyu tema
+# 3.2 DialogBmp (493x312): Sol panelli Kaiseki afisi + Temiz beyaz icerik alani
 $bmpDialog = New-Object System.Drawing.Bitmap(493, 312)
 $gDialog = [System.Drawing.Graphics]::FromImage($bmpDialog)
-$gDialog.Clear([System.Drawing.Color]::FromArgb(26, 31, 46))
+$gDialog.Clear([System.Drawing.Color]::White)
 
 $rectLeft = New-Object System.Drawing.Rectangle(0, 0, 164, 312)
 $setupBannerPath = "Kaiseki\res\setup_banner.png"
@@ -123,7 +134,7 @@ if (Test-Path $setupBannerPath) {
     $brushGrad.Dispose()
 }
 
-$penSep = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(50, 60, 85), 1)
+$penSep = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(226, 232, 240), 1)
 $gDialog.DrawLine($penSep, 164, 0, 164, 312)
 $penSep.Dispose()
 $gDialog.Dispose()
@@ -551,59 +562,59 @@ Add-DialogWithRing $db $wi "LangDlg" 260 100 3 "Select Setup Language" "LangComb
 
 # 2. WelcomeDlg
 Add-DialogWithRing $db $wi "WelcomeDlg" 370 270 3 "Kaiseki v$version Setup" "NextBtn" "NextBtn" "CancelBtn" @(
-    @{ Id="NextBtn";   Type="PushButton"; X=236; Y=243; W=56;  H=17;  Attr=3;     Prop=""; Text="[TXT_BTN_NEXT]" },
-    @{ Id="BackBtn";   Type="PushButton"; X=180; Y=243; W=56;  H=17;  Attr=1;     Prop=""; Text="[TXT_BTN_BACK]" },
-    @{ Id="CancelBtn"; Type="PushButton"; X=304; Y=243; W=56;  H=17;  Attr=3;     Prop=""; Text="[TXT_BTN_CANCEL]" },
+    @{ Id="Backdrop";  Type="Bitmap";     X=0;   Y=0;   W=370; H=234; Attr=1;     Prop=""; Text="DialogBmp" },
     @{ Id="TitleTxt";  Type="Text";       X=135; Y=20;  W=220; H=42;  Attr=65539; Prop=""; Text="{\DlgFontTitle}[TXT_WELCOME_TITLE]" },
     @{ Id="BodyTxt";   Type="Text";       X=135; Y=70;  W=220; H=120; Attr=65539; Prop=""; Text="[TXT_WELCOME_BODY]" },
     @{ Id="DivLine";   Type="Line";       X=0;   Y=234; W=370; H=2;   Attr=1;     Prop=""; Text="" },
-    @{ Id="Backdrop";  Type="Bitmap";     X=0;   Y=0;   W=370; H=234; Attr=1;     Prop=""; Text="DialogBmp" }
+    @{ Id="BackBtn";   Type="PushButton"; X=180; Y=243; W=56;  H=17;  Attr=1;     Prop=""; Text="[TXT_BTN_BACK]" },
+    @{ Id="NextBtn";   Type="PushButton"; X=236; Y=243; W=56;  H=17;  Attr=3;     Prop=""; Text="[TXT_BTN_NEXT]" },
+    @{ Id="CancelBtn"; Type="PushButton"; X=304; Y=243; W=56;  H=17;  Attr=3;     Prop=""; Text="[TXT_BTN_CANCEL]" }
 )
 
 # 3. LicenseDlg (GPLv3 Lisans Sozlesmesi ve Onayi)
 Add-DialogWithRing $db $wi "LicenseDlg" 370 270 3 "Kaiseki v$version Setup" "NextBtn" "NextBtn" "CancelBtn" @(
-    @{ Id="NextBtn";     Type="PushButton";     X=236; Y=243; W=56;  H=17;  Attr=3;      Prop="";             Text="[TXT_BTN_NEXT]" },
-    @{ Id="BackBtn";     Type="PushButton";     X=180; Y=243; W=56;  H=17;  Attr=3;      Prop="";             Text="[TXT_BTN_BACK]" },
-    @{ Id="CancelBtn";   Type="PushButton";     X=304; Y=243; W=56;  H=17;  Attr=3;      Prop="";             Text="[TXT_BTN_CANCEL]" },
-    @{ Id="LicenseText"; Type="ScrollableText"; X=15;  Y=50;  W=340; H=148; Attr=65539;  Prop="";             Text="LicenseRtf" },
-    @{ Id="AcceptCheck"; Type="CheckBox";       X=15;  Y=206; W=340; H=18;  Attr=3;      Prop="AGREELICENSE"; Text="[TXT_LICENSE_ACCEPT]" },
+    @{ Id="Banner";      Type="Bitmap";         X=0;   Y=0;   W=370; H=44;  Attr=1;      Prop="";             Text="BannerBmp" },
     @{ Id="TitleTxt";    Type="Text";           X=15;  Y=8;   W=295; H=16;  Attr=65539;  Prop="";             Text="{\DlgFontHeader}[TXT_LICENSE_TITLE]" },
     @{ Id="SubTxt";      Type="Text";           X=15;  Y=23;  W=295; H=15;  Attr=65539;  Prop="";             Text="{\DlgFontSub}[TXT_LICENSE_SUB]" },
     @{ Id="TopLine";     Type="Line";           X=0;   Y=44;  W=370; H=2;   Attr=1;      Prop="";             Text="" },
+    @{ Id="LicenseText"; Type="ScrollableText"; X=15;  Y=52;  W=340; H=146; Attr=65539;  Prop="";             Text="LicenseRtf" },
+    @{ Id="AcceptCheck"; Type="CheckBox";       X=15;  Y=206; W=340; H=18;  Attr=3;      Prop="AGREELICENSE"; Text="[TXT_LICENSE_ACCEPT]" },
     @{ Id="DivLine";     Type="Line";           X=0;   Y=234; W=370; H=2;   Attr=1;      Prop="";             Text="" },
-    @{ Id="Banner";      Type="Bitmap";         X=0;   Y=0;   W=370; H=44;  Attr=1;      Prop="";             Text="BannerBmp" }
+    @{ Id="BackBtn";     Type="PushButton";     X=180; Y=243; W=56;  H=17;  Attr=3;      Prop="";             Text="[TXT_BTN_BACK]" },
+    @{ Id="NextBtn";     Type="PushButton";     X=236; Y=243; W=56;  H=17;  Attr=3;      Prop="";             Text="[TXT_BTN_NEXT]" },
+    @{ Id="CancelBtn";   Type="PushButton";     X=304; Y=243; W=56;  H=17;  Attr=3;      Prop="";             Text="[TXT_BTN_CANCEL]" }
 )
 
 # 4. InstallDirDlg
 Add-DialogWithRing $db $wi "InstallDirDlg" 370 270 3 "Kaiseki v$version Setup" "NextBtn" "NextBtn" "CancelBtn" @(
-    @{ Id="NextBtn";      Type="PushButton"; X=236; Y=243; W=56;  H=17; Attr=3;     Prop="";                 Text="[TXT_BTN_NEXT]" },
-    @{ Id="BackBtn";      Type="PushButton"; X=180; Y=243; W=56;  H=17; Attr=3;     Prop="";                 Text="[TXT_BTN_BACK]" },
-    @{ Id="CancelBtn";    Type="PushButton"; X=304; Y=243; W=56;  H=17; Attr=3;     Prop="";                 Text="[TXT_BTN_CANCEL]" },
-    @{ Id="PathEditCtrl"; Type="PathEdit";   X=20;  Y=105; W=255; H=18; Attr=3;     Prop="INSTALLDIR";       Text="" },
-    @{ Id="BrowseBtn";    Type="PushButton"; X=280; Y=105; W=70;  H=18; Attr=3;     Prop="";                 Text="[TXT_BTN_BROWSE]" },
-    @{ Id="DeskCheck";    Type="CheckBox";   X=20;  Y=145; W=320; H=18; Attr=3;     Prop="DESKTOP_SHORTCUT"; Text="[TXT_DESK_SC]" },
-    @{ Id="TitleTxt";     Type="Text";       X=15;  Y=8;   W=295; H=16; Attr=65539; Prop="";                 Text="{\DlgFontHeader}[TXT_DIR_TITLE]" },
-    @{ Id="SubTxt";       Type="Text";       X=15;  Y=23;  W=295; H=15; Attr=65539; Prop="";                 Text="{\DlgFontSub}[TXT_DIR_SUB]" },
-    @{ Id="PromptTxt";    Type="Text";       X=20;  Y=60;  W=330; H=38; Attr=3;     Prop="";                 Text="[TXT_DIR_PROMPT]" },
-    @{ Id="TopLine";      Type="Line";       X=0;   Y=44;  W=370; H=2;  Attr=1;     Prop="";                 Text="" },
-    @{ Id="DivLine";      Type="Line";       X=0;   Y=234; W=370; H=2;  Attr=1;     Prop="";                 Text="" },
-    @{ Id="Banner";       Type="Bitmap";     X=0;   Y=0;   W=370; H=44;  Attr=1;     Prop="";                 Text="BannerBmp" }
+    @{ Id="Banner";       Type="Bitmap";     X=0;   Y=0;   W=370; H=44;  Attr=1;     Prop="";                 Text="BannerBmp" },
+    @{ Id="TitleTxt";     Type="Text";       X=15;  Y=8;   W=295; H=16;  Attr=65539; Prop="";                 Text="{\DlgFontHeader}[TXT_DIR_TITLE]" },
+    @{ Id="SubTxt";       Type="Text";       X=15;  Y=23;  W=295; H=15;  Attr=65539; Prop="";                 Text="{\DlgFontSub}[TXT_DIR_SUB]" },
+    @{ Id="TopLine";      Type="Line";       X=0;   Y=44;  W=370; H=2;   Attr=1;     Prop="";                 Text="" },
+    @{ Id="PromptTxt";    Type="Text";       X=20;  Y=60;  W=330; H=38;  Attr=3;     Prop="";                 Text="[TXT_DIR_PROMPT]" },
+    @{ Id="PathEditCtrl"; Type="PathEdit";   X=20;  Y=105; W=255; H=18;  Attr=3;     Prop="INSTALLDIR";       Text="" },
+    @{ Id="BrowseBtn";    Type="PushButton"; X=280; Y=105; W=70;  H=18;  Attr=3;     Prop="";                 Text="[TXT_BTN_BROWSE]" },
+    @{ Id="DeskCheck";    Type="CheckBox";   X=20;  Y=145; W=320; H=18;  Attr=3;     Prop="DESKTOP_SHORTCUT"; Text="[TXT_DESK_SC]" },
+    @{ Id="DivLine";      Type="Line";       X=0;   Y=234; W=370; H=2;   Attr=1;     Prop="";                 Text="" },
+    @{ Id="BackBtn";      Type="PushButton"; X=180; Y=243; W=56;  H=17;  Attr=3;     Prop="";                 Text="[TXT_BTN_BACK]" },
+    @{ Id="NextBtn";      Type="PushButton"; X=236; Y=243; W=56;  H=17;  Attr=3;     Prop="";                 Text="[TXT_BTN_NEXT]" },
+    @{ Id="CancelBtn";    Type="PushButton"; X=304; Y=243; W=56;  H=17;  Attr=3;     Prop="";                 Text="[TXT_BTN_CANCEL]" }
 )
 
 # 5. BrowseDlg
 Add-DialogWithRing $db $wi "BrowseDlg" 370 270 3 "Kaiseki v$version Setup" "DirList" "OkBtn" "CancelBtn" @(
-    @{ Id="DirList";   Type="DirectoryList";  X=20;  Y=85;  W=330; H=110; Attr=7;      Prop="INSTALLDIR"; Text="" },
-    @{ Id="PathEdit";  Type="PathEdit";       X=20;  Y=205; W=330; H=18;  Attr=3;      Prop="INSTALLDIR"; Text="" },
-    @{ Id="DirCombo";  Type="DirectoryCombo"; X=75;  Y=55;  W=205; H=80;  Attr=458755; Prop="INSTALLDIR"; Text="" },
-    @{ Id="UpBtn";     Type="PushButton";     X=285; Y=55;  W=65;  H=18;  Attr=3;      Prop="";           Text="[TXT_BTN_UP]" },
-    @{ Id="OkBtn";     Type="PushButton";     X=236; Y=243; W=56;  H=17;  Attr=3;      Prop="";           Text="[TXT_BTN_OK]" },
-    @{ Id="CancelBtn"; Type="PushButton";     X=304; Y=243; W=56;  H=17;  Attr=3;      Prop="";           Text="[TXT_BTN_CANCEL]" },
+    @{ Id="Banner";    Type="Bitmap";         X=0;   Y=0;   W=370; H=44;  Attr=1;      Prop="";           Text="BannerBmp" },
     @{ Id="TitleTxt";  Type="Text";           X=15;  Y=8;   W=295; H=16;  Attr=65539;  Prop="";           Text="{\DlgFontHeader}[TXT_BROWSE_TITLE]" },
     @{ Id="SubTxt";    Type="Text";           X=15;  Y=23;  W=295; H=15;  Attr=65539;  Prop="";           Text="{\DlgFontSub}[TXT_BROWSE_SUB]" },
-    @{ Id="LookInTxt"; Type="Text";           X=20;  Y=58;  W=52;  H=15;  Attr=3;      Prop="";           Text="[TXT_BROWSE_LOOKIN]" },
     @{ Id="TopLine";   Type="Line";           X=0;   Y=44;  W=370; H=2;   Attr=1;      Prop="";           Text="" },
+    @{ Id="LookInTxt"; Type="Text";           X=20;  Y=58;  W=52;  H=15;  Attr=3;      Prop="";           Text="[TXT_BROWSE_LOOKIN]" },
+    @{ Id="DirCombo";  Type="DirectoryCombo"; X=75;  Y=55;  W=205; H=80;  Attr=458755; Prop="INSTALLDIR"; Text="" },
+    @{ Id="UpBtn";     Type="PushButton";     X=285; Y=55;  W=65;  H=18;  Attr=3;      Prop="";           Text="[TXT_BTN_UP]" },
+    @{ Id="DirList";   Type="DirectoryList";  X=20;  Y=85;  W=330; H=110; Attr=7;      Prop="INSTALLDIR"; Text="" },
+    @{ Id="PathEdit";  Type="PathEdit";       X=20;  Y=205; W=330; H=18;  Attr=3;      Prop="INSTALLDIR"; Text="" },
     @{ Id="DivLine";   Type="Line";           X=0;   Y=234; W=370; H=2;   Attr=1;      Prop="";           Text="" },
-    @{ Id="Banner";    Type="Bitmap";         X=0;   Y=0;   W=370; H=44;  Attr=1;      Prop="";           Text="BannerBmp" }
+    @{ Id="OkBtn";     Type="PushButton";     X=236; Y=243; W=56;  H=17;  Attr=3;      Prop="";           Text="[TXT_BTN_OK]" },
+    @{ Id="CancelBtn"; Type="PushButton";     X=304; Y=243; W=56;  H=17;  Attr=3;      Prop="";           Text="[TXT_BTN_CANCEL]" }
 )
 
 # 6. VerifyReadyDlg
@@ -665,12 +676,12 @@ ExecSql $db "INSERT INTO EventMapping (Dialog_, Control_, Event, Attribute) VALU
 
 # 10. ExitDialog
 Add-DialogWithRing $db $wi "ExitDialog" 370 270 3 "Kaiseki v$version Setup" "FinishBtn" "FinishBtn" "FinishBtn" @(
-    @{ Id="FinishBtn";   Type="PushButton"; X=304; Y=243; W=56;  H=17;  Attr=3;     Prop="";          Text="[TXT_BTN_FINISH]" },
-    @{ Id="LaunchCheck"; Type="CheckBox";   X=135; Y=185; W=215; H=18;  Attr=3;     Prop="LAUNCHAPP"; Text="[TXT_LAUNCH_APP]" },
+    @{ Id="Backdrop";    Type="Bitmap";     X=0;   Y=0;   W=370; H=234; Attr=1;     Prop="";          Text="DialogBmp" },
     @{ Id="TitleTxt";    Type="Text";       X=135; Y=20;  W=220; H=42;  Attr=65539; Prop="";          Text="{\DlgFontTitle}[TXT_EXIT_TITLE]" },
     @{ Id="BodyTxt";     Type="Text";       X=135; Y=70;  W=220; H=95;  Attr=65539; Prop="";          Text="[TXT_EXIT_BODY]" },
+    @{ Id="LaunchCheck"; Type="CheckBox";   X=135; Y=185; W=215; H=18;  Attr=3;     Prop="LAUNCHAPP"; Text="[TXT_LAUNCH_APP]" },
     @{ Id="DivLine";     Type="Line";       X=0;   Y=234; W=370; H=2;   Attr=1;     Prop="";          Text="" },
-    @{ Id="Backdrop";    Type="Bitmap";     X=0;   Y=0;   W=370; H=234; Attr=1;     Prop="";          Text="DialogBmp" }
+    @{ Id="FinishBtn";   Type="PushButton"; X=304; Y=243; W=56;  H=17;  Attr=3;     Prop="";          Text="[TXT_BTN_FINISH]" }
 )
 
 # 11. CancelDlg
@@ -758,18 +769,16 @@ foreach ($ev in $events) {
 
 # 13. Binary, Icon & Cab Gomme
 function EmbedBinaryData($db, $wi, $table, $name, $path) {
+    $full = [System.IO.Path]::GetFullPath($path)
     $view = $db.OpenView("SELECT Name, Data FROM $table WHERE Name = '$name'")
     $view.Execute()
     $rec = $view.Fetch()
-    if ($rec) {
-        $rec.SetStream(2, $path)
-        $view.Modify(2, $rec)
-    } else {
+    if (-not $rec) {
         $rec = $wi.CreateRecord(2)
         $rec.StringData(1) = $name
-        $rec.SetStream(2, $path)
-        $view.Modify(7, $rec)
     }
+    $rec.SetStream(2, $full)
+    $view.Modify(3, $rec) # 3 = MSIMODIFY_ASSIGN (Kalici Kayit)
     $view.Close()
     [System.Runtime.InteropServices.Marshal]::ReleaseComObject($rec) | Out-Null
     [System.Runtime.InteropServices.Marshal]::ReleaseComObject($view) | Out-Null
