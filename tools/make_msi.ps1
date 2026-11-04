@@ -71,7 +71,7 @@ $cabPath = "$tempCabDir\Data1.cab"
 
 # 2.1 License RTF Olusturma (GPLv3)
 $licenseText = [System.IO.File]::ReadAllText("LICENSE")
-$rtfBody = $licenseText -replace '\\', '\\' -replace '\{', '\{' -replace '\}', '\}' -replace "`r?`n", "\par`r`n"
+$rtfBody = $licenseText.Replace('\', '\\').Replace('{', '\{').Replace('}', '\}') -replace "`r?`n", "\par`r`n"
 $rtfContent = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Segoe UI;}}\viewkind4\uc1\pard\f0\fs18 $rtfBody}"
 $rtfPath = "$tempCabDir\license.rtf"
 [System.IO.File]::WriteAllText($rtfPath, $rtfContent, [System.Text.Encoding]::ASCII)
@@ -608,7 +608,7 @@ Add-DialogWithRing $db $wi "BrowseDlg" 370 270 3 "Kaiseki v$version Setup" "DirL
 
 # 6. VerifyReadyDlg
 Add-DialogWithRing $db $wi "VerifyReadyDlg" 370 270 3 "Kaiseki v$version Setup" "InstallBtn" "InstallBtn" "CancelBtn" @(
-    @{ Id="InstallBtn"; Type="PushButton"; X=230; Y=243; W=64;  H=17; Attr=3;     Prop=""; Text="[TXT_BTN_INSTALL]" },
+    @{ Id="InstallBtn"; Type="PushButton"; X=230; Y=243; W=64;  H=17; Attr=8388611; Prop=""; Text="[TXT_BTN_INSTALL]" },
     @{ Id="BackBtn";    Type="PushButton"; X=168; Y=243; W=56;  H=17; Attr=3;     Prop=""; Text="[TXT_BTN_BACK]" },
     @{ Id="CancelBtn";  Type="PushButton"; X=304; Y=243; W=56;  H=17; Attr=3;     Prop=""; Text="[TXT_BTN_CANCEL]" },
     @{ Id="TitleTxt";   Type="Text";       X=15;  Y=8;   W=295; H=16; Attr=65539; Prop=""; Text="{\DlgFontHeader}[TXT_READY_TITLE]" },
@@ -622,7 +622,7 @@ Add-DialogWithRing $db $wi "VerifyReadyDlg" 370 270 3 "Kaiseki v$version Setup" 
 # 7. MaintenanceDlg (Kaldirma & Onarma Ekrani)
 Add-DialogWithRing $db $wi "MaintenanceDlg" 370 270 3 "Kaiseki v$version Setup" "RemoveBtn" "RemoveBtn" "CancelBtn" @(
     @{ Id="RemoveBtn"; Type="PushButton"; X=25;  Y=150; W=85;  H=20; Attr=3;     Prop=""; Text="[TXT_BTN_REMOVE]" },
-    @{ Id="RepairBtn"; Type="PushButton"; X=25;  Y=95;  W=85;  H=20; Attr=3;     Prop=""; Text="[TXT_BTN_REPAIR]" },
+    @{ Id="RepairBtn"; Type="PushButton"; X=25;  Y=95;  W=85;  H=20; Attr=8388611; Prop=""; Text="[TXT_BTN_REPAIR]" },
     @{ Id="BackBtn";   Type="PushButton"; X=236; Y=243; W=56;  H=17; Attr=1;     Prop=""; Text="[TXT_BTN_BACK]" },
     @{ Id="CancelBtn"; Type="PushButton"; X=304; Y=243; W=56;  H=17; Attr=3;     Prop=""; Text="[TXT_BTN_CANCEL]" },
     @{ Id="TitleTxt";  Type="Text";       X=15;  Y=8;   W=295; H=16; Attr=65539; Prop=""; Text="{\DlgFontHeader}[TXT_MAINT_TITLE]" },
@@ -637,7 +637,7 @@ Add-DialogWithRing $db $wi "MaintenanceDlg" 370 270 3 "Kaiseki v$version Setup" 
 
 # 8. VerifyRemoveDlg (Kaldirma Onay Ekrani)
 Add-DialogWithRing $db $wi "VerifyRemoveDlg" 370 270 3 "Kaiseki v$version Setup" "RemoveConfirmBtn" "RemoveConfirmBtn" "CancelBtn" @(
-    @{ Id="RemoveConfirmBtn"; Type="PushButton"; X=225; Y=243; W=70;  H=17; Attr=3;     Prop=""; Text="[TXT_BTN_REMOVE]" },
+    @{ Id="RemoveConfirmBtn"; Type="PushButton"; X=225; Y=243; W=70;  H=17; Attr=8388611; Prop=""; Text="[TXT_BTN_REMOVE]" },
     @{ Id="BackBtn";          Type="PushButton"; X=160; Y=243; W=56;  H=17; Attr=3;     Prop=""; Text="[TXT_BTN_BACK]" },
     @{ Id="CancelBtn";        Type="PushButton"; X=304; Y=243; W=56;  H=17; Attr=3;     Prop=""; Text="[TXT_BTN_CANCEL]" },
     @{ Id="TitleTxt";         Type="Text";       X=15;  Y=8;   W=295; H=16; Attr=65539; Prop=""; Text="{\DlgFontHeader}[TXT_VREM_TITLE]" },
@@ -781,7 +781,7 @@ EmbedBinaryData $db $wi "Binary" "DialogBmp" $dialogBmpPath
 EmbedBinaryData $db $wi "Binary" "LicenseRtf" $rtfPath
 EmbedBinaryData $db $wi "_Streams" "Data1.cab" $cabPath
 
-# 14. Summary Information (UAC Elevation Bit 3: 8 + Compressed Bit 1: 2 = 10)
+# 14. Summary Information (Compressed Bit 1: 2, Bit 3: 0 allows UAC elevation prompt)
 $sumInfo = $db.SummaryInformation(20)
 $sumInfo.Property(1)  = 1252
 $sumInfo.Property(2)  = "Installation Database"
@@ -790,7 +790,7 @@ $templateStr = if ($arch -eq "x64") { "x64;1033" } else { "Intel;1033" }
 $sumInfo.Property(7)  = $templateStr
 $sumInfo.Property(9)  = [System.Guid]::NewGuid().ToString("B").ToUpper()
 $sumInfo.Property(14) = 200
-$sumInfo.Property(15) = 10 # 2 (compressed) + 8 (UAC elevation prompt)
+$sumInfo.Property(15) = 2 # Compressed = 2, Bit 3 = 0 (Privileges CAN be required -> enables UAC elevation)
 $sumInfo.Property(18) = "Windows Installer"
 $sumInfo.Persist()
 
