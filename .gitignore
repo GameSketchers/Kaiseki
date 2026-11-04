@@ -41,29 +41,9 @@ run_test*.bat
 *.zip
 dist/
 
-# VS / C++ Project Artifacts
-bin/**/test_*.exe
-bin/x64/*.obj
-bin/x64/*.exp
-bin/x64/*.ilk
-bin/x64/*.pdb
-bin/x86/*.obj
-bin/x86/*.exp
-bin/x86/*.ilk
-bin/x86/*.pdb
-Kaiseki/*.obj
-
-# Keep bin DLLs, EXEs and resources if distributing prebuilts
-!bin/x64/*.exe
-!bin/x64/*.dll
-!bin/x64/*.lib
-!bin/x86/*.exe
-!bin/x86/*.dll
-!bin/x86/*.lib
-!bin/x64/res/**
-!bin/x64/lang/**
-!bin/x86/res/**
-!bin/x86/lang/**
+# Binary and Build Outputs
+bin/
+dist/
 
 upload_to_github*.bat
 
